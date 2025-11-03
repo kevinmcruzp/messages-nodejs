@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
+import { AppError } from "../errors/AppError";
 
 interface IPayLoad {
   sub: string;
@@ -13,7 +14,7 @@ export function ensureAuthenticated(
   const authToken = req.headers.authorization;
 
   if (!authToken) {
-    return res.status(401).json({ errorCode: "token.invalid" });
+    throw new AppError("Token não informado", 401);
   }
 
   const [, token] = authToken.split(" ");
@@ -25,6 +26,6 @@ export function ensureAuthenticated(
 
     return next();
   } catch (error) {
-    return res.status(401).json({ errorCode: "token.expired" });
+    throw new AppError("Token inválido ou expirado", 401);
   }
 }

@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { ProfileUserService } from "../services/ProfileUserService";
+import { asyncHandler } from "../utils/asyncHandler";
 
 class ProfileUserController {
-  async handle(req: Request, res: Response) {
+  handle = asyncHandler(async (req: Request, res: Response) => {
     const { user_id } = req;
 
     const service = new ProfileUserService();
@@ -10,7 +11,7 @@ class ProfileUserController {
     const result = await service.execute(user_id);
 
     return res.json(result);
-  }
+  });
 }
 
 export { ProfileUserController };

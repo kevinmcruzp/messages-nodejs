@@ -1,4 +1,5 @@
 import prismaClient from "../prisma";
+import { AppError } from "../errors/AppError";
 
 class ProfileUserService {
   async execute(user_id: string) {
@@ -7,6 +8,11 @@ class ProfileUserService {
         id: user_id,
       },
     });
+
+    if (!user) {
+      throw new AppError("Usuário não encontrado", 404);
+    }
+
     return user;
   }
 }

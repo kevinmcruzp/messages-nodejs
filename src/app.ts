@@ -6,6 +6,7 @@ import cors from "cors";
 import { Server } from "socket.io";
 
 import { router } from "./routes";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 app.use(cors());
@@ -37,5 +38,8 @@ app.get("/signin/callback", (req, res) => {
 
   return res.json(code);
 });
+
+// Error handler deve ser o último middleware
+app.use(errorHandler);
 
 export { serverHttp, io};

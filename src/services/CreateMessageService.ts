@@ -1,8 +1,17 @@
 import { io } from "../app";
 import prismaClient from "../prisma";
+import { AppError } from "../errors/AppError";
 
 class CreateMessageService {
   async execute(text: string, user_id: string) {
+    if (!text || text.trim().length === 0) {
+      throw new AppError("Mensagem não pode estar vazia", 400);
+    }
+
+    if (text.length > 500) {
+      throw new AppError("Mensagem muito longa. Máximo de 500 caracteres", 400);
+    }
+
     const message = await prismaClient.message.create({
       data: {
         text,

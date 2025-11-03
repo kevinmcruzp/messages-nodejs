@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { CreateMessageService } from "../services/CreateMessageService";
+import { asyncHandler } from "../utils/asyncHandler";
 
 class CreateMessageController {
-  async handle(req: Request, res: Response) {
+  handle = asyncHandler(async (req: Request, res: Response) => {
     const { message } = req.body;
     const { user_id } = req;
 
@@ -11,7 +12,7 @@ class CreateMessageController {
     const result = await service.execute(message, user_id);
 
     return res.json(result);
-  }
+  });
 }
 
 export { CreateMessageController };
